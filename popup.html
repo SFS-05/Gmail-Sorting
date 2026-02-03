@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudidian AI Sorter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <h1 class="logo">
+                    <i class="fas fa-cloud"></i>
+                    Cloudidian
+                </h1>
+                <div class="header-actions">
+                    <button class="icon-btn" id="settings-btn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="icon-btn" id="refresh-btn" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="tagline">TRANSFORMING IDEAS TO IMPACT</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Auth Section -->
+            <section class="section" id="auth-section">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i>
+                    Email Classification Engine
+                </h2>
+                <p class="section-description">
+                    Automatically categorize and organize emails using advanced machine learning algorithms.
+                </p>
+                
+                <div class="auth-container">
+                    <div class="auth-status" id="auth-status">
+                        <i class="fas fa-plug"></i>
+                        <span>Connect Gmail to start</span>
+                    </div>
+                    <button id="connect-gmail-btn" class="btn btn-primary btn-large">
+                        <i class="fas fa-envelope"></i>
+                        Connect Gmail
+                    </button>
+                    <p class="auth-note">
+                        <i class="fas fa-info-circle"></i>
+                        Requires Gmail and basic profile permissions
+                    </p>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section class="section" id="dashboard-section" style="display: none;">
+                <!-- User Info -->
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <img id="user-avatar" src="" alt="User Avatar">
+                        <div class="user-status online"></div>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">Loading...</div>
+                        <div class="user-email" id="user-email">Loading...</div>
+                    </div>
+                    <button class="btn btn-secondary btn-small" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Model Mode Selection -->
+                <div class="control-card">
+                    <div class="control-header">
+                        <h3 class="control-title">
+                            <i class="fas fa-brain"></i>
+                            Model Mode
+                        </h3>
+                        <div class="info-tooltip" title="Fast mode is quicker but less accurate. Accurate mode uses more processing for better results.">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                    </div>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="mode" value="fast" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <i class="fas fa-bolt"></i>
+                                Fast
+                                <span class="radio-subtitle">Quick classification</span>
+                            </span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="mode" value="balanced">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <i class="fas fa-tachometer-alt"></i>
+                                Balanced
+                                <span class="radio-subtitle">Speed & accuracy</span>
+                            </span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="mode" value="accurate">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <i class="fas fa-search"></i>
+                                Accurate
+                                <span class="radio-subtitle">Better accuracy</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Classification Controls -->
+                <div class="control-card">
+                    <div class="control-header">
+                        <h3 class="control-title">
+                            <i class="fas fa-play-circle"></i>
+                            Email Scope
+                        </h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-filter"></i>
+                            Select scope for classification
+                        </label>
+                        <select id="email-scope" class="select">
+                            <option value="unread">All unread emails</option>
+                            <option value="inbox">Inbox only</option>
+                            <option value="recent">Last 7 days</option>
+                            <option value="all">All emails</option>
+                        </select>
+                    </div>
+                    <button id="start-btn" class="btn btn-primary btn-large btn-full">
+                        <i class="fas fa-play"></i>
+                        Start Sorting
+                    </button>
+                </div>
+
+                <!-- Status Indicator -->
+                <div class="status-card" id="status-card">
+                    <div class="status-header">
+                        <h3 class="status-title">
+                            <i class="fas fa-tasks"></i>
+                            Status
+                        </h3>
+                        <div class="status-badge" id="status-badge">Ready</div>
+                    </div>
+                    <div class="status-content">
+                        <div class="status-indicator">
+                            <div class="status-dot status-idle" id="status-dot"></div>
+                            <span class="status-text" id="status-text">Ready</span>
+                        </div>
+                        <div class="job-info" id="job-info" style="display: none;">
+                            <div class="job-details">
+                                <span class="job-label">Job ID:</span>
+                                <span class="job-value" id="job-id">-</span>
+                            </div>
+                            <button class="btn btn-small btn-secondary" id="cancel-btn">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-card" id="progress-card" style="display: none;">
+                    <div class="progress-header">
+                        <div class="progress-title">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Sorting Emails...
+                        </div>
+                        <div class="progress-percentage" id="progress-percentage">0%</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span id="processed-count">0</span>
+                        <span>processed of</span>
+                        <span id="total-count">0</span>
+                        <span class="errors" id="error-count" style="display: none;">
+                            (<span id="errors-count">0</span> errors)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-title">Total Processed</h4>
+                            <div class="metric-value" id="total-processed">0</div>
+                            <div class="metric-trend positive" id="processed-trend">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+0%</span>
+                            </div>
+                            <div class="metric-subtitle">vs last run</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h4 class="metric-title">Unread Items</h4>
+                            <div class="metric-value" id="unread-count">0</div>
+                            <div class="metric-badge awaiting" id="unread-badge">
+                                <i class="fas fa-clock"></i>
+                                <span>Awaiting review</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Distribution -->
+                <div class="categories-card">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <i class="fas fa-chart-pie"></i>
+                            Category Distribution
+                        </div>
+                        <div class="section-actions">
+                            <button id="export-btn" class="btn btn-secondary btn-small">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                            <button id="refresh-categories" class="btn btn-secondary btn-small">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="categories-grid" id="categories-grid">
+                        <div class="loading-categories">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading categories...</span>
+                        </div>
+                    </div>
+                    <div class="last-run">
+                        <i class="far fa-clock"></i>
+                        Last run: <span id="last-run-time">never</span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3 class="section-title">
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+                    </h3>
+                    <div class="actions-grid">
+                        <button class="action-btn" id="quick-classify-btn">
+                            <i class="fas fa-magic"></i>
+                            <span>Classify Current Email</span>
+                        </button>
+                        <button class="action-btn" id="open-gmail-btn">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>Open Gmail</span>
+                        </button>
+                        <button class="action-btn" id="view-history-btn">
+                            <i class="fas fa-history"></i>
+                            <span>View History</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin fa-3x"></i>
+                    </div>
+                    <div class="loading-text" id="loading-text">Loading...</div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="version-info">
+                    <span class="version">v2.4.1 Enterprise</span>
+                    <span class="status-dot online"></span>
+                    <span class="api-status" id="api-status">API: Online</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="help-link">
+                        <i class="fas fa-question-circle"></i>
+                        Help
+                    </a>
+                    <a href="#" class="footer-link" id="feedback-link">
+                        <i class="fas fa-comment-alt"></i>
+                        Feedback
+                    </a>
+                    <a href="#" class="footer-link" id="privacy-link">
+                        <i class="fas fa-shield-alt"></i>
+                        Privacy
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Progress Modal (for detailed progress) -->
+    <div class="modal" id="progress-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                    Sorting Emails
+                </h3>
+                <button class="modal-close" id="progress-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="progress-container">
+                    <div class="progress-bar-large">
+                        <div class="progress-fill-large" id="progress-fill-large"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progress-current">0</span> / <span id="progress-total">0</span> emails processed
+                    </div>
+                </div>
+                <div class="progress-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Current Email:</span>
+                        <span id="current-email">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Category:</span>
+                        <span id="current-category">-</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Speed:</span>
+                        <span id="processing-speed">-</span> emails/sec
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Time remaining:</span>
+                        <span id="time-remaining">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="progress-cancel-btn">
+                    <i class="fas fa-stop"></i>
+                    Cancel Processing
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </h3>
+                <button class="modal-close" id="settings-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4 class="settings-title">
+                        <i class="fas fa-sliders-h"></i>
+                        General Settings
+                    </h4>
+                    <div class="settings-group">
+                        <label class="settings-label">
+                            <input type="checkbox" id="auto-sort" checked>
+                            <span>Enable auto-sorting</span>
+                        </label>
+                        <label class="settings-label">
+                            <input type="checkbox" id="show-notifications" checked>
+                            <span>Show notifications</span>
+                        </label>
+                        <label class="settings-label">
+                            <input type="checkbox" id="apply-labels" checked>
+                            <span>Apply Gmail labels automatically</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4 class="settings-title">
+                        <i class="fas fa-tags"></i>
+                        Category Settings
+                    </h4>
+                    <div class="categories-list" id="settings-categories">
+                        <!-- Categories for settings will be populated dynamically -->
+                        <div class="loading-categories">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Loading categories...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h4 class="settings-title">
+                        <i class="fas fa-code-branch"></i>
+                        API Settings
+                    </h4>
+                    <div class="form-group">
+                        <label class="form-label">API Base URL</label>
+                        <input type="text" id="api-url" class="form-input" 
+                               placeholder="https://api.cloudidian.app" 
+                               value="http://localhost:8000">
+                        <div class="form-hint">Change this for production/staging environments</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="settings-cancel">Cancel</button>
+                <button class="btn btn-primary" id="settings-save">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
