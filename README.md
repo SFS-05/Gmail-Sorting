@@ -27,3 +27,4 @@ Dashboard metrics in extension popup
 Async background processing
 
 Secure OAuth token lifecycle management
+<img width="1899" height="993" alt="Screenshot 2026-07-01 104927" src="https://github.com/user-attachments/assets/d75cf2ff-81ed-497e-902d-9cba98e8c27e" />
